@@ -1,24 +1,22 @@
-# retrogames/snake.py
 import curses
 import random
 
-def play_snake():
-    s = curses.initscr()
+def play_snake(stdscr):
     curses.curs_set(0)
-    sh, sw = s.getmaxyx()
+    sh, sw = stdscr.getmaxyx()
     w = curses.newwin(sh, sw, 0, 0)
     w.keypad(1)
     w.timeout(100)
 
-    snk_x = sw//4
-    snk_y = sh//2
+    snk_x = sw // 4
+    snk_y = sh // 2
     snake = [
         [snk_y, snk_x],
-        [snk_y, snk_x-1],
-        [snk_y, snk_x-2]
+        [snk_y, snk_x - 1],
+        [snk_y, snk_x - 2]
     ]
 
-    food = [sh//2, sw//2]
+    food = [sh // 2, sw // 2]
     w.addch(food[0], food[1], curses.ACS_PI)
 
     key = curses.KEY_RIGHT
@@ -28,8 +26,8 @@ def play_snake():
         key = key if next_key == -1 else next_key
 
         if snake[0][0] in [0, sh] or \
-            snake[0][1] in [0, sw] or \
-            snake[0] in snake[1:]:
+                snake[0][1] in [0, sw] or \
+                snake[0] in snake[1:]:
             curses.endwin()
             quit()
 
@@ -50,8 +48,8 @@ def play_snake():
             food = None
             while food is None:
                 nf = [
-                    random.randint(1, sh-1),
-                    random.randint(1, sw-1)
+                    random.randint(1, sh - 1),
+                    random.randint(1, sw - 1)
                 ]
                 food = nf if nf not in snake else None
             w.addch(food[0], food[1], curses.ACS_PI)
@@ -59,6 +57,5 @@ def play_snake():
             tail = snake.pop()
             w.addch(tail[0], tail[1], ' ')
 
-        w.addch(snake[0][0], snake[0][1], curses.ACS_CKBOARD)
-
-curses.wrapper(play_snake)
+        if snake[0][0] < sh and snake[0][1] < sw:
+            w.addch(snake[0][0], snake[0][1], curses.ACS_CKBOARD)

@@ -1,10 +1,12 @@
-# tests/test_tetris.py
+# tests/test_snake.py
 import unittest
-from retrogames import play_tetris
+from retrogames.snake import play_snake
 
-class TestTetris(unittest.TestCase):
-    def test_play_tetris(self):
-        play_tetris()  # This will just print the placeholder message
+class TestSnake(unittest.TestCase):
+    def test_play_snake(self):
+        # モックの標準スクリーンを作成するためにcursesを使用します
+        import curses
+        curses.wrapper(play_snake)  # テストとしてcurses.wrapperを呼び出します
 
 if __name__ == "__main__":
     unittest.main()
